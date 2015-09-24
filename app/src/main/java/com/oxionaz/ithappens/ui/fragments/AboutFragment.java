@@ -1,30 +1,24 @@
 package com.oxionaz.ithappens.ui.fragments;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
-import com.oxionaz.ithappens.rest.RestService;
 import com.oxionaz.ithappens.rest.api.Api;
-import com.oxionaz.ithappens.rest.model.StoryModel;
-import com.oxionaz.ithappens.ui.activity.MainActivity;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
 import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import rx.Observable;
@@ -34,7 +28,7 @@ import rx.functions.Action1;
  * Created by Александр on 22.09.2015.
  */
 @EFragment(R.layout.news_layout)
-public class StoryFragment extends Fragment {
+public class AboutFragment extends Fragment {
 
     private static final String LOG_TAG = "Story";
     private StoryAdapter storyAdapter;
@@ -45,8 +39,8 @@ public class StoryFragment extends Fragment {
     @ViewById
     FloatingActionButton fab;
 
-    public static StoryFragment newInstance(int page, String title) {
-        StoryFragment fragmentFirst = new StoryFragment();
+    public static AboutFragment newInstance(int page, String title) {
+        AboutFragment fragmentFirst = new AboutFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);

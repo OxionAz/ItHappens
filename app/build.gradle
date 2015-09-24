@@ -32,6 +32,9 @@ dependencies {
     apt "org.androidannotations:androidannotations:3.3.1"
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'io.realm:realm-android:0.82.2'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
 }
 
 apt {
