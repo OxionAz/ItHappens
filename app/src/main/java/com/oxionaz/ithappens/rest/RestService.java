@@ -1,17 +1,14 @@
 package com.oxionaz.ithappens.rest;
 
-import com.oxionaz.ithappens.rest.model.StoryModel;
-
+import com.oxionaz.ithappens.database.Story;
 import java.util.List;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Александр on 23.09.2015.
  */
 public class RestService {
-
-//    private static final String SITE = "ithappens.me";
-//    private static final String NAME = "bash";
-//    private static final String NUM = "1";
 
     RestClient restClient;
 
@@ -19,7 +16,7 @@ public class RestService {
         restClient = new RestClient();
     }
 
-    public List<StoryModel> addStory() {
-        return restClient.getAddStoryAPI().addStories();
+    public Observable<List<Story>> addStory() {
+        return restClient.getAddStoryAPI().loadStories().subscribeOn(Schedulers.io());
     }
 }

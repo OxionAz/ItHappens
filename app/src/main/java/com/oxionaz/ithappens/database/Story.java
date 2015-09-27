@@ -12,6 +12,7 @@ public class Story extends RealmObject {
     private String desc;
     private String link;
     private String elementPureHtml;
+    private boolean favorite;
 
     public String getSite() {
         return site;
@@ -34,7 +35,6 @@ public class Story extends RealmObject {
         this.desc = desc;
     }
 
-
     public String getLink() {
         return link;
     }
@@ -47,5 +47,12 @@ public class Story extends RealmObject {
     }
     public void setElementPureHtml(String elementPureHtml) {
         this.elementPureHtml = elementPureHtml;
+    }
+
+    public boolean getFavorite() {
+        return favorite;
+    }
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }
