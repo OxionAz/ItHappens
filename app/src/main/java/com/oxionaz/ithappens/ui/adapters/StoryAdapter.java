@@ -1,8 +1,6 @@
 package com.oxionaz.ithappens.ui.adapters;
 
-import android.app.Application;
-import android.graphics.drawable.Drawable;
-import android.support.design.widget.Snackbar;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
-
-import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
@@ -26,9 +21,11 @@ import io.realm.Realm;
  */
 public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHolder>{
     private List<Story> story;
+    private Context context;
 
-    public StoryAdapter(List<Story> story){
+    public StoryAdapter(List<Story> story, Context context){
         this.story = story;
+        this.context = context;
     }
 
     @Override
@@ -38,10 +35,19 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHold
     }
 
     @Override
-    public void onBindViewHolder(final CardViewHolder holder, int position) {
+    public void onBindViewHolder(final CardViewHolder holder, final int position) {
         final Story stories = story.get(position);
         holder.story.setText(Html.fromHtml(stories.getElementPureHtml()));
         holder.date.setText(stories.getDesc());
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Realm realm = Realm.getInstance(context);
+                realm.beginTransaction();
+                stories.setFavorite(true);
+                realm.commitTransaction();
+            }
+        });
     }
 
     @Override

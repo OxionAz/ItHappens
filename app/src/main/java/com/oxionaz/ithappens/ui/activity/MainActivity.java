@@ -1,11 +1,12 @@
 package com.oxionaz.ithappens.ui.activity;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.RestService;
@@ -13,6 +14,8 @@ import com.oxionaz.ithappens.ui.adapters.MyFragmentsAdapter;
 import com.oxionaz.ithappens.ui.fragments.AboutFragment_;
 import com.oxionaz.ithappens.ui.fragments.FavoritesFragment_;
 import com.oxionaz.ithappens.ui.fragments.StoryFragment_;
+import com.oxionaz.ithappens.util.NetworkConnectionUtil;
+import com.oxionaz.ithappens.util.RealmService;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -20,7 +23,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -33,6 +35,9 @@ import rx.functions.Action1;
     ViewPager vpPager;
 
     @ViewById
+    View main_content;
+
+    @ViewById
     PagerTabStrip pager_header;
 
     @ViewById
@@ -40,7 +45,12 @@ import rx.functions.Action1;
 
     @AfterViews
     void ready(){
-        loadStory();
+        if (getStories().isEmpty())
+        if (NetworkConnectionUtil.isNetworkConnected(this)){
+            loadStory();
+        } else {
+        Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
+        }
         setSupportActionBar(toolbar);
 
         List<Fragment> fragmentList = new ArrayList<Fragment>();
@@ -58,23 +68,16 @@ import rx.functions.Action1;
     void loadStory(){
         RestService restService = new RestService();
         Observable<List<Story>> storyList = restService.addStory();
-        storyList.subscribe(new Action1<List<Story>>()
-        {
+        storyList.subscribe(new Action1<List<Story>>() {
             @Override
             public void call(List<Story> stories) {
-                saveAll(stories);
+                RealmService.saveAll(stories, getApplicationContext());
             }
         });
     }
 
-    private void saveAll(List<Story> stories) {
+    private List<Story> getStories(){
         Realm realm = Realm.getInstance(this);
-        realm.beginTransaction();
-        realm.clear(Story.class);
-        realm.copyToRealm(stories);
-        realm.commitTransaction();
-        RealmResults<Story> result = realm.where(Story.class).findAll();
-        Log.d("total", "" + result.size());
+        return realm.where(Story.class).findAll();
     }
-
 }
