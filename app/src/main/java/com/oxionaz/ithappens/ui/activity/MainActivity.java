@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
+
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.RestService;

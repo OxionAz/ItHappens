@@ -1,6 +1,8 @@
 package com.oxionaz.ithappens.ui.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -34,17 +36,22 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHold
         return new CardViewHolder(itemView);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final CardViewHolder holder, final int position) {
         final Story stories = story.get(position);
         holder.story.setText(Html.fromHtml(stories.getElementPureHtml()));
         holder.date.setText(stories.getDesc());
+        if(stories.getFavorite()){
+            holder.fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
+        } else holder.fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Realm realm = Realm.getInstance(context);
                 realm.beginTransaction();
-                stories.setFavorite(true);
+                if(stories.getFavorite()){
+                stories.setFavorite(false);} else stories.setFavorite(true);
                 realm.commitTransaction();
             }
         });

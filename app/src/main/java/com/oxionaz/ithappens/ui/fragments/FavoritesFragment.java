@@ -47,11 +47,11 @@ public class FavoritesFragment extends Fragment {
 
 //    @Click
 //    void fab(){
-//        List<Story> stories = getStories();
-//        stories.
+////        List<Story> stories = getStories();
+////        stories.
 //        Realm realm = Realm.getInstance(getContext());
 //        realm.beginTransaction();
-//        realm.copyToRealm(stories);
+//        realm.
 //        realm.commitTransaction();
 //    }
 
