@@ -45,16 +45,6 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHold
         if(stories.getFavorite()){
             holder.fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
         } else holder.fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp));
-        holder.fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Realm realm = Realm.getInstance(context);
-                realm.beginTransaction();
-                if(stories.getFavorite()){
-                stories.setFavorite(false);} else stories.setFavorite(true);
-                realm.commitTransaction();
-            }
-        });
     }
 
     @Override

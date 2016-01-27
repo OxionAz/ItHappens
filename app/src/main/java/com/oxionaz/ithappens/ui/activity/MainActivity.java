@@ -4,11 +4,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
-
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.RestService;
@@ -47,12 +46,14 @@ import rx.functions.Action1;
 
     @AfterViews
     void ready(){
+
         if (getStories().isEmpty())
         if (NetworkConnectionUtil.isNetworkConnected(this)){
             loadStory();
         } else {
         Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
         }
+
         setSupportActionBar(toolbar);
 
         List<Fragment> fragmentList = new ArrayList<Fragment>();
@@ -64,6 +65,27 @@ import rx.functions.Action1;
         pager_header.setTabIndicatorColor(getResources().getColor(R.color.white));
         myFragmentsAdapter = new MyFragmentsAdapter(getSupportFragmentManager(), fragmentList);
         vpPager.setAdapter(myFragmentsAdapter);
+        vpPager.setCurrentItem(0);
+
+        vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0)
+                    (myFragmentsAdapter.getItem(position)).onResume(); //onUpdateView is public function at 'FirstFragment', insert your code here
+                else if(position==1)
+                    (myFragmentsAdapter.getItem(position)).onResume();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Background

@@ -1,5 +1,6 @@
 package com.oxionaz.ithappens.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;

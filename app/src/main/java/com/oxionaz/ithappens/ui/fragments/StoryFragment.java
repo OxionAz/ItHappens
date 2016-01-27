@@ -1,5 +1,7 @@
 package com.oxionaz.ithappens.ui.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
@@ -39,7 +42,7 @@ public class StoryFragment extends Fragment {
     RecyclerView recycler_view_content;
 
     @ViewById
-    View main_content;
+    View main_content, list_item;
 
     @ViewById
     FloatingActionButton fab;
@@ -53,6 +56,20 @@ public class StoryFragment extends Fragment {
         storyAdapter = new StoryAdapter(getStories(), getContext());
         recycler_view_content.setAdapter(storyAdapter);
     }
+
+//    @Click(R.id.favorite_button)
+//    void setFavorite(){
+//        int visiblePosition = recycler_view_content.getChildLayoutPosition(list_item);
+//        View v = recycler_view_content.getChildAt(position - visiblePosition);
+//        Button button  = (Button) v.findViewById(R.id.button);//id кнопки в разметке айтема
+//        button.setBackground(background);// вставить свое значение для фона
+//    }
+//
+//    Realm realm = Realm.getInstance(getContext());
+//    realm.beginTransaction();
+//    if(stories.getFavorite()){
+//        stories.setFavorite(false);} else stories.setFavorite(true);
+//    realm.commitTransaction();
 
     @Override
     public void onResume() {
