@@ -1,16 +1,19 @@
 package com.oxionaz.ithappens.ui.fragments;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
+import com.oxionaz.ithappens.ui.adapters.FavoriteStoryAdapter;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,7 +31,8 @@ import io.realm.Realm;
 @EFragment(R.layout.favorite_layout)
 public class FavoritesFragment extends Fragment {
 
-    private StoryAdapter storyAdapter;
+    private static final String LOG_TAG = "Favorite";
+    private FavoriteStoryAdapter favoriteStoryAdapter;
 
     @ViewById
     RecyclerView recycler_view_content;
@@ -42,24 +46,39 @@ public class FavoritesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_content.setLayoutManager(linearLayoutManager);
-        storyAdapter = new StoryAdapter(getFavoriteStories(), getContext());
-        recycler_view_content.setAdapter(storyAdapter);
     }
 
-//    @Click
-//    void fab(){
-////        List<Story> stories = getStories();
-////        stories.
-//        Realm realm = Realm.getInstance(getContext());
-//        realm.beginTransaction();
-//        realm.
-//        realm.commitTransaction();
-//    }
+    @Click
+    public void fab(){
+        if (!getFavoriteStories().isEmpty()) {
+            AlertDialog confirmDelete = new AlertDialog.Builder(getActivity(), R.style.AlertDialog)
+                    .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteFavorite();
+                        }
+                    }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setMessage("Удалить все истории из избранного?")
+                    .setTitle("Очистка избранного")
+                    .create();
+            confirmDelete.getWindow().setWindowAnimations(R.style.AlertDialogDel);
+            confirmDelete.show();
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<List<Story>>() {
+        Log.d(LOG_TAG, "Вызван метод onResume");
+        loadData();
+    }
+
+    void loadData(){
+        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Story>>() {
             @Override
             public Loader<List<Story>> onCreateLoader(int id, Bundle args) {
                 final android.support.v4.content.AsyncTaskLoader<List<Story>> loader = new android.support.v4.content.AsyncTaskLoader<List<Story>>(getContext()) {
@@ -74,7 +93,8 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Story>> loader, List<Story> data) {
-                recycler_view_content.setAdapter(new StoryAdapter(getFavoriteStories(), getContext()));
+                favoriteStoryAdapter = new FavoriteStoryAdapter(getFavoriteStories(), getContext());
+                recycler_view_content.setAdapter(favoriteStoryAdapter);
             }
 
             @Override
@@ -83,13 +103,24 @@ public class FavoritesFragment extends Fragment {
         });
     }
 
-    private List<Story> getStories(){
+    private void deleteFavorite(){
+        List<Story> storyList = getStories();
         Realm realm = Realm.getInstance(getContext());
-        return realm.where(Story.class).findAll();
+        realm.beginTransaction();
+        for (int i = 0; i < storyList.size(); i++) if (storyList.get(i).getFavorite()) {
+            storyList.get(i).setFavorite(false);
+        }
+        realm.commitTransaction();
+        loadData();
     }
 
     private List<Story> getFavoriteStories(){
         Realm realm = Realm.getInstance(getContext());
         return realm.where(Story.class).equalTo("favorite", true).findAll();
+    }
+
+    private List<Story> getStories(){
+        Realm realm = Realm.getInstance(getContext());
+        return realm.where(Story.class).findAll();
     }
 }

@@ -3,7 +3,10 @@
     <color name="white">#f7f7f7</color>
     <color name="lightYellow">#f7dcd6</color>
     <color name="black">#1a1a1a</color>
-    <color name="primary">#169955</color>
+    <color name="primary">#2585bc</color>
+    <color name="primary_green">#169955</color>
     <color name="silver">#bababa</color>
+    <color name="silver_text">#565656</color>
+    <color name="light_silver">#e4e4e4</color>
     <color name="red">#ba3d75</color>
 </resources>

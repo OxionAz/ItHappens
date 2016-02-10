@@ -6,10 +6,14 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary</item>
         <item name="colorAccent">@color/primary</item>
+
     </style>
 
-    <style name="splashScreenTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
-        <item name="android:windowBackground">@drawable/moneytracker</item>
+    <style name="SplashScreenTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@drawable/ithappens</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="Container">
@@ -19,13 +23,22 @@
     </style>
 
     <style name="Container.Background">
-        <item name="android:background">@drawable/background_3</item>
+        <item name="android:background">@color/light_silver</item>
     </style>
 
     <style name="Fragments">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/primary</item>
+    </style>
+
+    <style name="AlertDialogDel">
+        <item name="@android:windowEnterAnimation">@anim/from_dialog_del</item>
+        <item name="@android:windowExitAnimation">@anim/to_dialog_del</item>
     </style>
 
 </resources>

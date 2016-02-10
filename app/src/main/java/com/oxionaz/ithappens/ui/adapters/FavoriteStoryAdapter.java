@@ -2,16 +2,13 @@ package com.oxionaz.ithappens.ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.oxionaz.ithappens.R;
@@ -25,11 +22,11 @@ import io.realm.Realm;
 /**
  * Created by Александр on 22.09.2015.
  */
-public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHolder>{
+public class FavoriteStoryAdapter extends RecyclerView.Adapter<FavoriteStoryAdapter.CardViewHolder>{
     private List<Story> story;
     private Context context;
 
-    public StoryAdapter(List<Story> story, Context context){
+    public FavoriteStoryAdapter(List<Story> story, Context context){
         this.story = story;
         this.context = context;
     }
@@ -46,8 +43,6 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHold
         Story stories = story.get(position);
         holder.story.setText(Html.fromHtml(stories.getElementPureHtml()));
         holder.date.setText(stories.getDesc());
-        holder.fav.setBackground(stories.getFavorite() ? context.getDrawable(R.drawable.ic_favorite_black_24dp)
-                : context.getDrawable(R.drawable.ic_favorite_border_black_24dp));
     }
 
     @Override
@@ -70,19 +65,15 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.CardViewHold
 
         @Override
         public void onClick(View v) {
-            addToFavorite(getAdapterPosition());
+            removeFromFavorite(getAdapterPosition());
         }
     }
 
-    public void addToFavorite(int positions){
+    public void removeFromFavorite(int positions){
         Realm realm = Realm.getInstance(context);
         realm.beginTransaction();
-        if (!story.get(positions).getFavorite()) {
-            story.get(positions).setFavorite(true);
-        } else {
-            story.get(positions).setFavorite(false);
-        }
+        story.get(positions).setFavorite(false);
         realm.commitTransaction();
-        notifyItemChanged(positions);
+        notifyItemRemoved(positions);
     }
 }

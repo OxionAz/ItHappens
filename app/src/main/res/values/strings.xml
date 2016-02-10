@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello</string>
     <string name="action_settings">Settings</string>
+    <string name="Story">Text</string>
+    <string name="Date">Date</string>
+    <string name="internet_error">Не удалось загрузить истории, проверьте интернет подключение</string>
 </resources>

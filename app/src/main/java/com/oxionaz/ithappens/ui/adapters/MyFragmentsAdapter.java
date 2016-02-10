@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class MyFragmentsAdapter extends FragmentStatePagerAdapter {
 
-    private final String titles[] = new String[]{"Истории","Избранное","О нас"};
+    private final String titles[] = new String[]{"Истории","Избранное","О приложении"};
     List<Fragment> fragmentList;
 
     public MyFragmentsAdapter(FragmentManager fm, List<Fragment> fragmentList) {

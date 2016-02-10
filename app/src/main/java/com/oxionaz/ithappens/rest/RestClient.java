@@ -15,10 +15,9 @@ import retrofit.converter.GsonConverter;
 public class RestClient {
 
     private static final String BASE_URL = "http://www.umori.li/api/";
-
     private AddStoryAPI addStoryAPI;
 
-    RestClient(){
+    public RestClient(){
         Gson gson = new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy() {
                     @Override
