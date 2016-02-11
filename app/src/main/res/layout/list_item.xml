@@ -43,16 +43,34 @@
                 android:textStyle="italic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:gravity="start|center"
                 android:text="@string/Date"/>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:columnCount="2">
+
+            <Button
+                android:id="@+id/share_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:background="@drawable/ic_share_black_24dp"/>
 
             <Button
                 android:id="@+id/favorite_button"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_gravity="end"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:background="@drawable/ic_favorite_black_24dp"/>
+        </GridLayout>
+
         </GridLayout>
 
     </LinearLayout>

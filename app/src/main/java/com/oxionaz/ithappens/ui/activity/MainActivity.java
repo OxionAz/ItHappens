@@ -9,13 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.oxionaz.ithappens.R;
-import com.oxionaz.ithappens.rest.Queries;
 import com.oxionaz.ithappens.ui.adapters.MyFragmentsAdapter;
 import com.oxionaz.ithappens.ui.fragments.AboutFragment_;
 import com.oxionaz.ithappens.ui.fragments.FavoritesFragment_;
+import com.oxionaz.ithappens.ui.fragments.StoryFragment;
 import com.oxionaz.ithappens.ui.fragments.StoryFragment_;
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
@@ -28,9 +27,6 @@ import java.util.List;
 
     private MyFragmentsAdapter myFragmentsAdapter;
     private static boolean exit = false;
-
-    @Bean
-    Queries queries = new Queries(this);
 
     @ViewById
     ViewPager vpPager;
@@ -48,7 +44,6 @@ import java.util.List;
     @AfterViews
     void ready(){
         setSupportActionBar(toolbar);
-
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         fragmentList.add(new StoryFragment_());
         fragmentList.add(new FavoritesFragment_());
@@ -56,10 +51,9 @@ import java.util.List;
 
         pager_header.setTextColor(getResources().getColor(R.color.silver_text));
         pager_header.setTabIndicatorColor(getResources().getColor(R.color.white));
-        pager_header.setTextSize(1,16);
+        pager_header.setTextSize(1, 16);
         myFragmentsAdapter = new MyFragmentsAdapter(getSupportFragmentManager(), fragmentList);
         vpPager.setAdapter(myFragmentsAdapter);
-
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

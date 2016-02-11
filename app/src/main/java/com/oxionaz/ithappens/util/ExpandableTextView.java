@@ -34,14 +34,20 @@ public class ExpandableTextView extends TextView {
         this.trimLength = typedArray.getInt(R.styleable.ExpandableTextView_trimLength, DEFAULT_TRIM_LENGTH);
         typedArray.recycle();
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                trim = !trim;
-                setText();
-                requestFocusFromTouch();
-            }
-        });
+//        setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                trim = !trim;
+//                setText();
+//                requestFocusFromTouch();
+//            }
+//        });
+    }
+
+    public void trimText(){
+        trim = !trim;
+        setText();
+        requestFocusFromTouch();
     }
 
     private void setText() {

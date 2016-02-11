@@ -17,6 +17,7 @@ import android.view.View;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.Queries;
+import com.oxionaz.ithappens.ui.activity.MainActivity;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 import com.oxionaz.ithappens.util.NetworkConnectionUtil;
 
@@ -37,7 +38,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
 
     private static final String LOG_TAG = "Story";
     private StoryAdapter storyAdapter;
-    private boolean load;
+    private boolean check = true;
 
     @Bean
     Queries queries = new Queries(getActivity());
@@ -56,13 +57,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
 
     @AfterViews
     void ready(){
-        if (getStories().isEmpty()) if (load) if (NetworkConnectionUtil.isNetworkConnected(getActivity())){
-            swipeRefreshLayout.setRefreshing(true);
-            queries.loadStories();
-            this.load = false;
-        } else {
-            Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
-        }
+        if (check) checkDB();
         recycler_view_content.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -75,6 +70,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
                     queries.loadStories();
                 } else {
                     Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
@@ -138,6 +134,16 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
         });
     }
 
+    public void checkDB(){
+        if (getStories().isEmpty()) if (NetworkConnectionUtil.isNetworkConnected(getActivity())){
+            swipeRefreshLayout.setRefreshing(true);
+            queries.loadStories();
+        } else {
+            Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
+        }
+        check = false;
+    }
+
     private void deleteAndUpdateStories(){
         Realm realm = Realm.getInstance(getContext());
         List<Story> storyList = realm.where(Story.class).equalTo("favorite", false).findAll();
@@ -148,7 +154,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
     }
 
     private List<Story> getStories(){
-        Realm realm = Realm.getInstance(getContext());
+        Realm realm = Realm.getInstance(getActivity());
         return realm.where(Story.class).findAll();
     }
 
