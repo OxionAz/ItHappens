@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
@@ -20,6 +21,8 @@ import com.oxionaz.ithappens.rest.Queries;
 import com.oxionaz.ithappens.ui.activity.MainActivity;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 import com.oxionaz.ithappens.util.NetworkConnectionUtil;
+import com.oxionaz.ithappens.util.NotificationUtil;
+import com.oxionaz.ithappens.util.SettingsUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

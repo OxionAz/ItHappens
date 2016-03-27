@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.oxionaz.ithappens.sync.StorySyncAdapter;
+
 /**
  * Created by Александр on 09.02.2016.
  */
 
 public class SplashActivity extends Activity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +22,7 @@ public class SplashActivity extends Activity {
                 startMainActivity();
             }
         }, 2500);
+        StorySyncAdapter.initializeSyncAdapter(this);
     }
 
     private void startMainActivity() {

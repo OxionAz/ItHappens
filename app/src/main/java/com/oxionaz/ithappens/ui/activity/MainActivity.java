@@ -1,5 +1,6 @@
 package com.oxionaz.ithappens.ui.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -9,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.oxionaz.ithappens.R;
+import com.oxionaz.ithappens.sync.StorySyncAdapter;
 import com.oxionaz.ithappens.ui.adapters.MyFragmentsAdapter;
 import com.oxionaz.ithappens.ui.fragments.AboutFragment_;
 import com.oxionaz.ithappens.ui.fragments.FavoritesFragment_;
-import com.oxionaz.ithappens.ui.fragments.StoryFragment;
 import com.oxionaz.ithappens.ui.fragments.StoryFragment_;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
@@ -40,6 +42,11 @@ import java.util.List;
     @ViewById
     static
     Toolbar toolbar;
+
+    @OptionsItem(R.id.action_settings)
+    void menuClick(){
+        startActivity(new Intent(this, SettingsActivity_.class));
+    }
 
     @AfterViews
     void ready(){
