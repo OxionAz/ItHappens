@@ -1,7 +1,6 @@
 package com.oxionaz.ithappens.ui.activity;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -12,12 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.oxionaz.ithappens.R;
-
+import com.oxionaz.ithappens.sync.StorySyncAdapter;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.PreferenceScreen;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -75,6 +72,9 @@ public class SettingsActivity extends AppCompatActivity {
                 int prefIndex = listPreference.findIndexOfValue(stringValue);
                 if (prefIndex >= 0) {
                     preference.setSummary(listPreference.getEntries()[prefIndex]);
+                    String time = String.valueOf(listPreference.getEntryValues()[prefIndex]);
+                    int sync = Integer.parseInt(time);
+                    StorySyncAdapter.updateSyncInterval(sync, getActivity());
                 }
             } else {
                 preference.setSummary(stringValue);

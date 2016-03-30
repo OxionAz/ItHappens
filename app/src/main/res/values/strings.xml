@@ -19,7 +19,7 @@
 
     <string name="pref_update_interval_title">Интервал обновления</string>
     <string name="pref_update_interval_key" translatable="false">update_time</string>
-    <string name="pref_update_interval_default" translatable="false">1140</string>
+    <string name="pref_update_interval_default" translatable="false">12</string>
     <string name="pref_update_interval_summary">Выберите оптимальный интервал</string>
 
     <string name="pref_notification_title">Уведомление об обновлении</string>

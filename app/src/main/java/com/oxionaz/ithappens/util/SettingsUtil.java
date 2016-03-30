@@ -23,11 +23,6 @@ public class SettingsUtil {
                 Boolean.parseBoolean(context.getString(R.string.pref_update_default)));
     }
 
-    public String getIntervalPref() {
-        return pref.getString(context.getString(R.string.pref_update_interval_key),
-                context.getString(R.string.pref_update_interval_default));
-    }
-
     public boolean getNotificationPref() {
         return pref.getBoolean(context.getString(R.string.pref_notification_key),
                 Boolean.parseBoolean(context.getString(R.string.pref_notification_default)));

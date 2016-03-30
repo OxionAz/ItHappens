@@ -12,6 +12,7 @@ public class StorySyncService extends Service {
 
     private static final Object sSyncAdapterLock = new Object();
     private static StorySyncAdapter sStorySyncAdapter = null;
+
     @Override
     public void onCreate() {
         synchronized (sSyncAdapterLock) {
@@ -24,6 +25,6 @@ public class StorySyncService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return sStorySyncAdapter.getSyncAdapterBinder();
     }
 }

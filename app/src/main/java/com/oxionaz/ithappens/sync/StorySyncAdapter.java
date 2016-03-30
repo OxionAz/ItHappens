@@ -10,6 +10,7 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.rest.Queries;
 import com.oxionaz.ithappens.util.NotificationUtil;
@@ -20,13 +21,12 @@ import com.oxionaz.ithappens.util.SettingsUtil;
  */
 public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
 
+    private static final String LOG_E = "StorySyncAdapter:";
     private SettingsUtil settingsUtil = new SettingsUtil(getContext());
     private Queries queries = new Queries(getContext());
-    private static int hours;
 
     public StorySyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        hours = Integer.parseInt(settingsUtil.getIntervalPref());
     }
 
     public static void initializeSyncAdapter(Context context) {
@@ -35,6 +35,7 @@ public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+        Log.e(LOG_E, "onPerformSync: Была проведена синхронизация");
         if(settingsUtil.getSyncCheck()){
             queries.loadStories();
             if(settingsUtil.getNotificationPref()) NotificationUtil.updateNotification(getContext());
@@ -60,12 +61,21 @@ public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        int SYNC_INTERVAL = 60 * 60 * hours;
+        final int SYNC_INTERVAL = 60 * 60 * 12;
         final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
         StorySyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
         ContentResolver.addPeriodicSync(newAccount, context.getString(R.string.content_authority), Bundle.EMPTY, SYNC_INTERVAL);
         syncImmediately(context);
+    }
+
+    public static void updateSyncInterval(int syncInterval, Context context) {
+        int SYNC_INTERVAL = 60 * 60 * syncInterval;
+        int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+        Account account = getSyncAccount(context);
+        StorySyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        ContentResolver.setSyncAutomatically(account, context.getString(R.string.content_authority), true);
+        ContentResolver.addPeriodicSync(account, context.getString(R.string.content_authority), Bundle.EMPTY, SYNC_INTERVAL);
     }
 
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {

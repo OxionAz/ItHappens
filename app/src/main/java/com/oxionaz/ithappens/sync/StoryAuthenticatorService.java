@@ -15,7 +15,6 @@ public class StoryAuthenticatorService extends Service {
     @Override
     public void onCreate() {
         mStoryAuthenticator = new StoryAuthenticator(this);
-        super.onCreate();
     }
 
     @Nullable
