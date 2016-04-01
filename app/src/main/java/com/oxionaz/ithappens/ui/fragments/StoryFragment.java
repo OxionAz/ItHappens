@@ -11,35 +11,25 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.Queries;
-import com.oxionaz.ithappens.ui.activity.MainActivity;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 import com.oxionaz.ithappens.util.NetworkConnectionUtil;
-import com.oxionaz.ithappens.util.NotificationUtil;
-import com.oxionaz.ithappens.util.SettingsUtil;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import java.util.List;
 import io.realm.Realm;
 
-/**
- * Created by Александр on 22.09.2015.
- */
 @EFragment(R.layout.story_layout)
 public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
 
-    private static final String LOG_TAG = "Story";
     private StoryAdapter storyAdapter;
     private boolean check = true;
 
@@ -58,6 +48,9 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
     @ViewById
     View main_content, list_item;
 
+    @StringRes
+    String internet_error, alert_positive, alert_negative, alert_message_story, alert_title_story;
+
     @AfterViews
     void ready(){
         if (check) checkDB();
@@ -72,7 +65,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
                 if (NetworkConnectionUtil.isNetworkConnected(getActivity())){
                     queries.loadStories();
                 } else {
-                    Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(main_content, internet_error, Snackbar.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }
@@ -83,19 +76,18 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
     void fab(){
         if (!getStories().isEmpty()) {
             AlertDialog confirmDelete = new AlertDialog.Builder(getActivity(), R.style.AlertDialog)
-                    .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(alert_positive, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteAndUpdateStories();
                         }
-                    }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(alert_negative, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    }).setMessage("Все истории будут удалены, избранные истории сохранятся.\n" +
-                            "Вы хотите удалить истории?")
-                    .setTitle("Удаление историй")
+                    }).setMessage(alert_message_story)
+                    .setTitle(alert_title_story)
                     .create();
             confirmDelete.getWindow().setWindowAnimations(R.style.AlertDialogDel);
             confirmDelete.show();
@@ -105,13 +97,13 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(LOG_TAG, "Вызван метод onResume");
         loadData();
     }
 
     @UiThread
     public void loadData(){
         getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Story>>() {
+
             @Override
             public Loader<List<Story>> onCreateLoader(int id, Bundle args) {
                 final android.support.v4.content.AsyncTaskLoader<List<Story>> loader = new android.support.v4.content.AsyncTaskLoader<List<Story>>(getContext()) {
@@ -142,7 +134,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
             swipeRefreshLayout.setRefreshing(true);
             queries.loadStories();
         } else {
-            Snackbar.make(main_content, "Не удалось загрузить истории, проверьте интернет подключение", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(main_content, internet_error, Snackbar.LENGTH_SHORT).show();
         }
         check = false;
     }

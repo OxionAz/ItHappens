@@ -4,17 +4,13 @@ import android.content.Context;
 import android.widget.Toast;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.util.RealmService;
+import java.util.List;
+import rx.Observable;
+import rx.functions.Action1;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
-import java.util.List;
-
-import rx.Observable;
-import rx.functions.Action1;
-
-/**
- * Created by Александр on 28.01.2016.
- */
+import org.androidannotations.annotations.res.StringRes;
 
 @EBean
 public class Queries {
@@ -22,13 +18,16 @@ public class Queries {
     private Context context;
     private UpdaterCallBack updaterCallBack;
 
+    @StringRes
+    String unknown_error, success;
+
     public Queries(Context context){
         this.context = context;
     }
 
     @Background
     public void loadStories(){
-        RestClient restClient = new RestClient();
+        RestClient restClient = new RestClient(context);
         Observable<List<Story>> storyModelObservable = restClient.getAddStoryAPI().loadStories();
         storyModelObservable.subscribe(new Action1<List<Story>>() {
                     @Override
@@ -47,12 +46,12 @@ public class Queries {
 
     @UiThread
     public void unknownError(){
-        Toast.makeText(context, "Не удалось связаться с сервером", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, unknown_error, Toast.LENGTH_SHORT).show();
     }
 
     @UiThread
     public void success(){
-        Toast.makeText(context, "Истории загружены ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, success, Toast.LENGTH_SHORT).show();
     }
 
     public void registerCallBack(UpdaterCallBack register){

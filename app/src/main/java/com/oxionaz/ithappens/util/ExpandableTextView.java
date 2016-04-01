@@ -4,14 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
-
 import com.oxionaz.ithappens.R;
 
-/**
- * Created by Александр on 02.02.2016.
- */
 public class ExpandableTextView extends TextView {
 
     private static final int DEFAULT_TRIM_LENGTH = 200;

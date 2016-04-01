@@ -13,9 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.ui.activity.MainActivity_;
 
-/**
- * Created by Александр on 27.03.2016.
- */
 public class NotificationUtil {
     private static final int NOTIFICATION_ID = 12345;
 

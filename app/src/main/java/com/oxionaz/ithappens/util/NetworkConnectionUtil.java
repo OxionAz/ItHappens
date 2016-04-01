@@ -1,8 +1,5 @@
 package com.oxionaz.ithappens.util;
 
-/**
- * Created by Александр on 17.09.2015.
- */
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

@@ -17,10 +17,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-/**
- * Created by Александр on 23.02.2016.
- */
-
 @EActivity(R.layout.settings_activity)
 public class SettingsActivity extends AppCompatActivity {
 
@@ -45,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
-            setTitle(R.string.nav_drawer_settings);
+            setTitle(R.string.action_settings);
         }
     }
 

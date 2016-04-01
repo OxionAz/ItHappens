@@ -10,18 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.util.ExpandableTextView;
-
 import java.util.List;
-
 import io.realm.Realm;
 
-/**
- * Created by Александр on 22.09.2015.
- */
 public class FavoriteStoryAdapter extends RecyclerView.Adapter<FavoriteStoryAdapter.CardViewHolder>{
     private List<Story> story;
     private Context context;

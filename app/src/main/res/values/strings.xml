@@ -1,12 +1,39 @@
 <resources>
     <string name="app_name">ItHappens</string>
 
+    <!--General-->
+    <string name="base_url">http://www.umori.li/api/</string>
     <string name="hello_world">Hello</string>
     <string name="action_settings">Настройки</string>
     <string name="Story">Text</string>
     <string name="Date">Date</string>
     <string name="internet_error">Не удалось загрузить истории, проверьте интернет подключение</string>
-    <string name="nav_drawer_settings">Настройки</string>
+    <string name="exit_confirm">Нажмите еще раз для выхода</string>
+    <string-array name="tabs_title">
+        <item>Истории</item>
+        <item>Избранное</item>
+        <item>О приложении</item>
+    </string-array>
+
+    <!--LOG-->
+    <string name="sync_adapter">StorySyncAdapter:</string>
+    <string name="on_perform_sync">onPerformSync: Была проведена синхронизация</string>
+
+    <!--About-->
+    <string name="description">MobileClient</string>
+    <string name="version">v.1.0</string>
+
+    <!--QueriesMessages-->
+    <string name="unknown_error">Не удалось связаться с сервером</string>
+    <string name="success">Истории загружены</string>
+
+    <!--AlertDialog-->
+    <string name="alert_positive">Удалить</string>
+    <string name="alert_negative">Отмена</string>
+    <string name="alert_message_story">Все истории будут удалены, избранные истории сохранятся.\nВы хотите удалить истории?</string>
+    <string name="alert_title_story">Удаление историй</string>
+    <string name="alert_message_favorite">Удалить все истории из избранного?</string>
+    <string name="alert_title_favorite">Очистка избранного</string>
 
     <!--Строки для Notification Enabled preference-->
     <string name="pref_enable">Включено</string>

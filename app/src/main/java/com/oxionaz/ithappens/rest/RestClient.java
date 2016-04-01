@@ -1,23 +1,21 @@
 package com.oxionaz.ithappens.rest;
 
+import android.content.Context;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.rest.api.AddStoryAPI;
 import io.realm.RealmObject;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-/**
- * Created by Александр on 22.09.2015.
- */
 public class RestClient {
 
-    private static final String BASE_URL = "http://www.umori.li/api/";
     private AddStoryAPI addStoryAPI;
 
-    public RestClient(){
+    public RestClient(Context context){
         Gson gson = new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy() {
                     @Override
@@ -33,7 +31,7 @@ public class RestClient {
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(BASE_URL)
+                .setEndpoint(context.getString(R.string.base_url))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setConverter(new GsonConverter(gson))
                 .build();

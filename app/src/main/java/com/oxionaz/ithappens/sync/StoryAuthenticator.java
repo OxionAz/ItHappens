@@ -7,9 +7,6 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.os.Bundle;
 
-/**
- * Created by Александр on 27.03.2016.
- */
 public class StoryAuthenticator extends AbstractAccountAuthenticator {
 
     public StoryAuthenticator(Context context) {

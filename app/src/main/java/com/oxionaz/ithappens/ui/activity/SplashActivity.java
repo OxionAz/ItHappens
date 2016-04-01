@@ -4,23 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
-import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.sync.StorySyncAdapter;
-import com.oxionaz.ithappens.util.SettingsUtil;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-
-/**
- * Created by Александр on 09.02.2016.
- */
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         StorySyncAdapter.initializeSyncAdapter(this);
         delayedStart();
     }

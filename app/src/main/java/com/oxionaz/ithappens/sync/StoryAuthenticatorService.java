@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-/**
- * Created by Александр on 27.03.2016.
- */
 public class StoryAuthenticatorService extends Service {
 
     private StoryAuthenticator mStoryAuthenticator;

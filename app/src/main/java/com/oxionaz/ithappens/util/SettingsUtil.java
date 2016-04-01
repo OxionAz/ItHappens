@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.oxionaz.ithappens.R;
 
-/**
- * Created by Александр on 27.03.2016.
- */
 public class SettingsUtil {
 
     private SharedPreferences pref;

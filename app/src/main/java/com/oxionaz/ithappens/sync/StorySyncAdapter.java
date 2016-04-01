@@ -16,9 +16,6 @@ import com.oxionaz.ithappens.rest.Queries;
 import com.oxionaz.ithappens.util.NotificationUtil;
 import com.oxionaz.ithappens.util.SettingsUtil;
 
-/**
- * Created by Александр on 27.03.2016.
- */
 public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_E = "StorySyncAdapter:";

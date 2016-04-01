@@ -2,17 +2,12 @@ package com.oxionaz.ithappens.util;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.oxionaz.ithappens.database.Story;
-
 import java.util.ArrayList;
 import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-/**
- * Created by Александр on 28.09.2015.
- */
 public class RealmService {
 
     public static void saveAll(List<Story> stories, Context context) {

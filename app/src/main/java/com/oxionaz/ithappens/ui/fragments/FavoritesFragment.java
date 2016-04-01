@@ -9,29 +9,20 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.ui.adapters.FavoriteStoryAdapter;
-import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
+import org.androidannotations.annotations.res.StringRes;
 import java.util.List;
-
 import io.realm.Realm;
 
-/**
- * Created by Александр on 22.09.2015.
- */
 @EFragment(R.layout.favorite_layout)
 public class FavoritesFragment extends Fragment {
 
-    private static final String LOG_TAG = "Favorite";
     private FavoriteStoryAdapter favoriteStoryAdapter;
 
     @ViewById
@@ -39,6 +30,9 @@ public class FavoritesFragment extends Fragment {
 
     @ViewById
     FloatingActionButton fab;
+
+    @StringRes
+    String alert_positive, alert_negative, alert_message_favorite, alert_title_favorite;
 
     @AfterViews
     void ready(){
@@ -52,18 +46,18 @@ public class FavoritesFragment extends Fragment {
     public void fab(){
         if (!getFavoriteStories().isEmpty()) {
             AlertDialog confirmDelete = new AlertDialog.Builder(getActivity(), R.style.AlertDialog)
-                    .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(alert_positive, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteFavorite();
                         }
-                    }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(alert_negative, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    }).setMessage("Удалить все истории из избранного?")
-                    .setTitle("Очистка избранного")
+                    }).setMessage(alert_message_favorite)
+                    .setTitle(alert_title_favorite)
                     .create();
             confirmDelete.getWindow().setWindowAnimations(R.style.AlertDialogDel);
             confirmDelete.show();
@@ -73,12 +67,11 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(LOG_TAG, "Вызван метод onResume");
         loadData();
     }
 
     void loadData(){
-        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Story>>() {
+        getLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<List<Story>>() {
             @Override
             public Loader<List<Story>> onCreateLoader(int id, Bundle args) {
                 final android.support.v4.content.AsyncTaskLoader<List<Story>> loader = new android.support.v4.content.AsyncTaskLoader<List<Story>>(getContext()) {

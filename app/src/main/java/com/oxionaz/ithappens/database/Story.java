@@ -2,9 +2,6 @@ package com.oxionaz.ithappens.database;
 
 import io.realm.RealmObject;
 
-/**
- * Created by Александр on 22.09.2015.
- */
 public class Story extends RealmObject {
 
     private String site;

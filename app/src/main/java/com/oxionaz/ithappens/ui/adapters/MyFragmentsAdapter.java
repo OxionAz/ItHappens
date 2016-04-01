@@ -2,23 +2,19 @@ package com.oxionaz.ithappens.ui.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
-
 import java.util.List;
 
-/**
- * Created by Александр on 27.09.2015.
- */
 public class MyFragmentsAdapter extends FragmentStatePagerAdapter {
 
-    private final String titles[] = new String[]{"Истории","Избранное","О приложении"};
+    String[] titles;
     List<Fragment> fragmentList;
 
-    public MyFragmentsAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public MyFragmentsAdapter(FragmentManager fm, List<Fragment> fragmentList, String[] titles) {
         super(fm);
         this.fragmentList = fragmentList;
+        this.titles = titles;
     }
 
     @Override

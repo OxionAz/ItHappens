@@ -1,9 +1,7 @@
 package com.oxionaz.ithappens.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerTabStrip;
@@ -12,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.oxionaz.ithappens.R;
-import com.oxionaz.ithappens.sync.StorySyncAdapter;
 import com.oxionaz.ithappens.ui.adapters.MyFragmentsAdapter;
 import com.oxionaz.ithappens.ui.fragments.AboutFragment_;
 import com.oxionaz.ithappens.ui.fragments.FavoritesFragment_;
@@ -22,6 +19,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringArrayRes;
+import org.androidannotations.annotations.res.StringRes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +41,13 @@ import java.util.List;
     PagerTabStrip pager_header;
 
     @ViewById
-    static
     Toolbar toolbar;
+
+    @StringRes
+    String exit_confirm;
+
+    @StringArrayRes
+    String[] tabs_title;
 
     @OptionsItem(R.id.action_settings)
     void menuClick(){
@@ -61,21 +65,19 @@ import java.util.List;
         pager_header.setTextColor(getResources().getColor(R.color.silver_text));
         pager_header.setTabIndicatorColor(getResources().getColor(R.color.white));
         pager_header.setTextSize(1, 16);
-        myFragmentsAdapter = new MyFragmentsAdapter(getSupportFragmentManager(), fragmentList);
+        myFragmentsAdapter = new MyFragmentsAdapter(getSupportFragmentManager(), fragmentList, tabs_title);
         vpPager.setAdapter(myFragmentsAdapter);
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
                 if (position == 1 || position == 0)
                     (myFragmentsAdapter.getItem(position)).onResume();
                 //onUpdateView is public function at 'FirstFragment', insert your code here
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -87,7 +89,7 @@ import java.util.List;
     public void onBackPressed() {
         if (exit) super.onBackPressed();
         exit = true;
-        Snackbar.make(vpPager, "Нажмите еще раз для выхода", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(vpPager, exit_confirm, Snackbar.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
