@@ -17,21 +17,32 @@ repositories {
 apply plugin: 'android-apt'
 
 android {
+    signingConfigs {
+        realase_version {
+            keyAlias 'story'
+            keyPassword 'ItHappens_KEY_oxionaz@123'
+            storeFile file('F:/Android Development/Store/ItHappens.jks')
+            storePassword 'ItHappens_KEY_oxionaz@123'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
-
     defaultConfig {
         applicationId "com.oxionaz.ithappens"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.realase_version
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.realase_version
         }
+    }
+    productFlavors {
     }
 }
 

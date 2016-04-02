@@ -15,15 +15,23 @@ import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.rest.Queries;
 import com.oxionaz.ithappens.util.NotificationUtil;
 import com.oxionaz.ithappens.util.SettingsUtil;
+import com.oxionaz.ithappens.util.UpdaterCallBack;
 
 public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_E = "StorySyncAdapter:";
+    private static UpdaterCallBack updaterCallBack;
     private SettingsUtil settingsUtil = new SettingsUtil(getContext());
     private Queries queries = new Queries(getContext());
+    private Context context;
 
     public StorySyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.context = context;
+    }
+
+    public static void registerCallBack(UpdaterCallBack register){
+        updaterCallBack = register;
     }
 
     public static void initializeSyncAdapter(Context context) {
@@ -32,9 +40,10 @@ public class StorySyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.e(LOG_E, "onPerformSync: Была проведена синхронизация");
+        Log.e(LOG_E, context.getString(R.string.on_perform_sync));
         if(settingsUtil.getSyncCheck()){
             queries.loadStories();
+            updaterCallBack.callBackSuccess();
             if(settingsUtil.getNotificationPref()) NotificationUtil.updateNotification(getContext());
         }
     }

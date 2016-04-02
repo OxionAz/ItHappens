@@ -13,8 +13,8 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         StorySyncAdapter.initializeSyncAdapter(this);
+        Fabric.with(this, new Crashlytics());
         delayedStart();
     }
 

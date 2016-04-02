@@ -2,6 +2,7 @@ package com.oxionaz.ithappens.ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -37,6 +38,7 @@ public class FavoriteStoryAdapter extends RecyclerView.Adapter<FavoriteStoryAdap
         Story stories = story.get(position);
         holder.story.setText(Html.fromHtml(stories.getElementPureHtml()));
         holder.date.setText(stories.getDesc());
+        holder.shareStory.setShareStory(stories.getElementPureHtml());
     }
 
     @Override
@@ -48,18 +50,47 @@ public class FavoriteStoryAdapter extends RecyclerView.Adapter<FavoriteStoryAdap
         protected ExpandableTextView story;
         protected TextView date;
         protected Button fav;
+        protected Button share;
+        protected Share shareStory;
 
         public CardViewHolder (View itemView){
             super(itemView);
+            shareStory = new Share();
             story = (ExpandableTextView) itemView.findViewById(R.id.name_text);
             date = (TextView) itemView.findViewById(R.id.data_text);
             fav = (Button) itemView.findViewById(R.id.favorite_button);
+            share = (Button) itemView.findViewById(R.id.share_button);
+            share.setOnClickListener(shareStory);
             fav.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    story.trimText();
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
             removeFromFavorite(getAdapterPosition());
+        }
+    }
+
+    private class Share implements View.OnClickListener {
+
+        private String shareStory;
+
+        public void setShareStory(String story){
+            this.shareStory = story;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareStory);
+            context.startActivity(Intent.createChooser(sharingIntent, "Поделиться"));
         }
     }
 

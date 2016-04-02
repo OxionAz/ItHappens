@@ -16,7 +16,6 @@
     </string-array>
 
     <!--LOG-->
-    <string name="sync_adapter">StorySyncAdapter:</string>
     <string name="on_perform_sync">onPerformSync: Была проведена синхронизация</string>
 
     <!--About-->

@@ -15,8 +15,10 @@ import android.view.View;
 import com.oxionaz.ithappens.R;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.rest.Queries;
+import com.oxionaz.ithappens.sync.StorySyncAdapter;
 import com.oxionaz.ithappens.ui.adapters.StoryAdapter;
 import com.oxionaz.ithappens.util.NetworkConnectionUtil;
+import com.oxionaz.ithappens.util.UpdaterCallBack;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -28,13 +30,10 @@ import java.util.List;
 import io.realm.Realm;
 
 @EFragment(R.layout.story_layout)
-public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
+public class StoryFragment extends Fragment implements UpdaterCallBack {
 
     private StoryAdapter storyAdapter;
     private boolean check = true;
-
-    @Bean
-    Queries queries = new Queries(getActivity());
 
     @ViewById
     FloatingActionButton fab;
@@ -51,18 +50,22 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
     @StringRes
     String internet_error, alert_positive, alert_negative, alert_message_story, alert_title_story;
 
+    @Bean
+    Queries queries = new Queries(getActivity());
+
     @AfterViews
     void ready(){
-        if (check) checkDB();
+        queries.registerCallBack(this);
+        queries.setFragmentView(main_content);
+        StorySyncAdapter.registerCallBack(this);
         recycler_view_content.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_view_content.setLayoutManager(linearLayoutManager);
-        queries.registerCallBack(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (NetworkConnectionUtil.isNetworkConnected(getActivity())){
+                if (NetworkConnectionUtil.isNetworkConnected(getActivity())) {
                     queries.loadStories();
                 } else {
                     Snackbar.make(main_content, internet_error, Snackbar.LENGTH_SHORT).show();
@@ -70,6 +73,7 @@ public class StoryFragment extends Fragment implements Queries.UpdaterCallBack {
                 }
             }
         });
+        if (check) checkDB();
     }
 
     @Click

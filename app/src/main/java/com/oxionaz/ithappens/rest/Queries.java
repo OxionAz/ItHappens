@@ -1,9 +1,11 @@
 package com.oxionaz.ithappens.rest;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import com.oxionaz.ithappens.database.Story;
 import com.oxionaz.ithappens.util.RealmService;
+import com.oxionaz.ithappens.util.UpdaterCallBack;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
@@ -16,6 +18,7 @@ import org.androidannotations.annotations.res.StringRes;
 public class Queries {
 
     private Context context;
+    private View fragmentView = null;
     private UpdaterCallBack updaterCallBack;
 
     @StringRes
@@ -23,6 +26,10 @@ public class Queries {
 
     public Queries(Context context){
         this.context = context;
+    }
+
+    public void setFragmentView(View fragmentView){
+        this.fragmentView = fragmentView;
     }
 
     @Background
@@ -34,10 +41,10 @@ public class Queries {
                     public void call(List<Story> storyModels) {
                         if (!storyModels.isEmpty()){
                             RealmService.saveAll(storyModels, context);
-                            success();
+                            if(fragmentView != null) success();
                             updaterCallBack.callBackSuccess();
                         } else {
-                            unknownError();
+                            if(fragmentView != null) unknownError();
                             updaterCallBack.callBackSuccess();
                         }
                     }
@@ -46,19 +53,15 @@ public class Queries {
 
     @UiThread
     public void unknownError(){
-        Toast.makeText(context, unknown_error, Toast.LENGTH_SHORT).show();
+        Snackbar.make(fragmentView, unknown_error, Snackbar.LENGTH_SHORT).show();
     }
 
     @UiThread
     public void success(){
-        Toast.makeText(context, success, Toast.LENGTH_SHORT).show();
+        Snackbar.make(fragmentView, success, Snackbar.LENGTH_SHORT).show();
     }
 
     public void registerCallBack(UpdaterCallBack register){
         this.updaterCallBack = register;
-    }
-
-    public interface UpdaterCallBack{
-        void callBackSuccess();
     }
 }
