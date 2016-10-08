@@ -57,7 +57,6 @@ public class StoryFragment extends Fragment implements UpdaterCallBack {
     void ready(){
         queries.registerCallBack(this);
         queries.setFragmentView(main_content);
-        StorySyncAdapter.registerCallBack(this);
         recycler_view_content.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
